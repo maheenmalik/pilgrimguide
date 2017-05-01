@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +29,7 @@ public class Umrah extends Fragment {
     RecyclerView MyRecyclerView;
     RecyclerView RecyclerViewleftmenue;
 
-
+    HajjContentAdapter mAdapter = null;
     String [] EssentialItemDescription ;
 
     int  [] Images;
@@ -68,21 +69,47 @@ public class Umrah extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_umrah, container, false);
+        View view = inflater.inflate(R.layout.fragment_hajj, container, false);
 
+        // Right Panel.. Content about Hajj Essentials
         MyRecyclerView = (RecyclerView) view.findViewById(R.id.cardView);
         MyRecyclerView.setHasFixedSize(true);
         LinearLayoutManager MyLayoutManager = new LinearLayoutManager(getActivity());
         MyLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         if (listitems.size() > 0 & MyRecyclerView != null) {
-            MyRecyclerView.setAdapter(new MyAdapter(listitems));
+            //MyRecyclerView.setAdapter(new MyAdapter(listitems));
+            mAdapter = new HajjContentAdapter( getContext(), listitems);
+            MyRecyclerView.setAdapter(mAdapter);
         }
         MyRecyclerView.setLayoutManager(MyLayoutManager);
+        MyRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
 
 
+        //This is the code to provide a sectioned list
+        List<HajjContentSectionedRecyclerViewAdapter.Section> sections = new ArrayList<HajjContentSectionedRecyclerViewAdapter.Section>();
+
+        //Sections
+        sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(0,"    TAWAF   ")); // PARAM 1 =  number of items in first category
+
+        sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(4,"    MAQAM IBRAHIM   "));
+        sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(6,"    DRINK ZAMZAM    "));
+        sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(9,"    SA'I    "));
+        sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(11,"   HAIRCUT "));
+
+        //Add  adapter to the sectionAdapter
+        HajjContentSectionedRecyclerViewAdapter.Section[] sectionsAdapter = new HajjContentSectionedRecyclerViewAdapter.Section[sections.size()];
+        HajjContentSectionedRecyclerViewAdapter mSectionedAdapter = new
+                HajjContentSectionedRecyclerViewAdapter(getContext(),R.layout.section,R.id.section_text,mAdapter);
+        mSectionedAdapter.setSections(sections.toArray(sectionsAdapter));
+
+        //Apply this adapter to the RecyclerView
+        MyRecyclerView.setAdapter(mSectionedAdapter);
+
+
+
+        //-------------------------------------------------------------------------------------------------------
         // left menue
 
         RecyclerViewleftmenue = (RecyclerView) view.findViewById(R.id.leftmenue_rv);
@@ -97,10 +124,6 @@ public class Umrah extends Fragment {
         return view;
     }
 
-
-
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -110,43 +133,8 @@ public class Umrah extends Fragment {
     public interface OnFragmentInteractionListener {
     }
 
-    public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
-        private ArrayList<EssentialItem> list;
 
-        public MyAdapter(ArrayList<EssentialItem> Data) {
-            list = Data;
-        }
-
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            // create a new view
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recycle_items, parent, false);
-            MyViewHolder holder = new MyViewHolder(view);
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
-
-            holder.titleTextView.setText(list.get(position).getCardName());
-            holder.coverImageView.setImageResource(list.get(position).getImageResourceId());
-            holder.coverImageView.setTag(list.get(position).getImageResourceId());
-            holder.likeImageView.setTag(R.drawable.ic_like);
-
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return list.size();
-        }
-    }
-
-
-
-
-
+    // Adpater class for left menue in Hajj tab
     public class MyAdapter2 extends RecyclerView.Adapter<MenueViewHolder> {
         private int list[];
 
@@ -192,103 +180,46 @@ public class Umrah extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                   // Toast.makeText(getActivity(),R.id.iconButton +" clicked",Toast.LENGTH_SHORT).show();
-                    Log.d("clickecchaljao","hahah"+R.id.iconButton);
-                   // MyLayoutManager.scrollToPositionWithOffset(2, 10);
-                   // MyRecyclerView.getLayoutManager().scrollToPosition(3);
-
-                    RecyclerView.SmoothScroller smoothScroller = new
-                            LinearSmoothScroller(getContext()) {
-                                @Override protected int getVerticalSnapPreference() {
-                                    return LinearSmoothScroller.SNAP_TO_START;
-                                }
-                            };
-                    smoothScroller.setTargetPosition(2);
-                    MyRecyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
+                /*    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());//((LinearLayoutManager) MyRecyclerView.getLayoutManager());
+                    layoutManager.scrollToPositionWithOffset(4, 0);
+                    MyRecycler
+                    View.setLayoutManager(layoutManager);
+                    Toast.makeText(getActivity()," clicked",Toast.LENGTH_SHORT).show();*/
 
 
+                    //   HajjContentAdapter section = new HajjContentAdapter(sectionTag, getString(R.string.group_title, randomNumber));
 
+                    //  sectionAdapter.addSection(sectionTag, section);
 
+                    // int sectionPos = mAdapter.   (sectionTag);
 
-                }
-            });
+//                    mAdapter.notifyItemInserted(sectionPos);
 
+                  /*  MyRecyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            //MyRecyclerView.smoothScrollToPosition(listitems.size()-2);
+                           View setNow = MyRecyclerView.getChildAt(1);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                            layoutManager.scrollToPositionWithOffset(4, 0);
+                            mAdapter.notifyDataSetChanged();
+                            // layoutManager.attachView(setNow);
+                            // or do mRecyclerView.scrollTo(0, scrolled);
+                        }
+                    });*/
+                    /*new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            MyRecyclerView.getLayoutManager().scrollToPosition(listitems.size()-1);
 
+                        }
+                    }, 200);*/
+                    //LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                    //Toast.makeText(getActivity(),MyRecyclerView.getAdapterPosition()+ " clicked",Toast.LENGTH_SHORT).show();
 
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView titleTextView;
-        public ImageView coverImageView;
-        public ImageView likeImageView;
-        public ImageView shareImageView;
-
-        public MyViewHolder(View v) {
-            super(v);
-            titleTextView = (TextView) v.findViewById(R.id.titleTextView);
-            coverImageView = (ImageView) v.findViewById(R.id.coverImageView);
-            likeImageView = (ImageView) v.findViewById(R.id.likeImageView);
-            shareImageView = (ImageView) v.findViewById(R.id.shareImageView);
-            likeImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                    int id = (int)likeImageView.getTag();
-                    if( id == R.drawable.detailinfo){
-
-                        likeImageView.setTag(R.drawable.detailedinfo);
-                        likeImageView.setImageResource(R.drawable.detailedinfo);
-
-                        Toast.makeText(getActivity(),titleTextView.getText()+" added to favourites",Toast.LENGTH_SHORT).show();
-
-                    }else{
-
-                        likeImageView.setTag(R.drawable.detailinfo);
-                        likeImageView.setImageResource(R.drawable.detailinfo);
-                        Toast.makeText(getActivity(),titleTextView.getText()+" removed from favourites",Toast.LENGTH_SHORT).show();
-
-
-                    }
-
-                }
-            });
-
-
-
-            shareImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-
-
-
-
-                    Uri imageUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
-                            "://" + getResources().getResourcePackageName(coverImageView.getId())
-                            + '/' + "drawable" + '/' + getResources().getResourceEntryName((int)coverImageView.getTag()));
-
-
-                    Intent shareIntent = new Intent();
-                    shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.putExtra(Intent.EXTRA_STREAM,imageUri);
-                    shareIntent.setType("image/jpeg");
-                    startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
-
-
+                  /*  Toast.makeText(getActivity(), mAdapter.getItemCount() + " clicked " + mAdapter.getItemId(0),Toast.LENGTH_SHORT).show();
+                    for(int i = 0 ; i < 5; i++)
+                        Log.d("***",String.valueOf(mAdapter.getItemId(i)));*/
 
                 }
             });
@@ -299,7 +230,7 @@ public class Umrah extends Fragment {
     }
 
 
-
+    // Fills the EssentialItem list with required data
     public void initializeList() {
         listitems.clear();
 
