@@ -45,6 +45,7 @@ public class prepareItemrvDataAdapter extends RecyclerView.Adapter<prepareItemrv
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
+
         final int pos = position;
 
         viewHolder.tvName.setText(stList.get(position).getName());

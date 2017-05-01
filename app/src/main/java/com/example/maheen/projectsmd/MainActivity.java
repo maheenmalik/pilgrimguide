@@ -1,16 +1,14 @@
 package com.example.maheen.projectsmd;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Hajj.OnFragmentInteractionListener,Umrah.OnFragmentInteractionListener,Prepare.OnFragmentInteractionListener {
 
@@ -112,6 +110,21 @@ public class MainActivity extends AppCompatActivity implements Hajj.OnFragmentIn
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            Intent i = new Intent(this, MyPreferencesActivity.class);
+            startActivity(i);
+            // Display the fragment as the main content.
+           /* FragmentManager mFragmentManager = getFragmentManager();
+            FragmentTransaction mFragmentTransaction = mFragmentManager
+                    .beginTransaction();
+            PrefsFragment mPrefsFragment = new PrefsFragment();
+            mFragmentTransaction.replace(android.R.id.content, mPrefsFragment);
+            mFragmentTransaction.commit();*/
+
+           /* getFragmentManager().beginTransaction()
+				.replace(android.R.id.content, new PrefsFragment()).commit();
+*/
+
             return true;
         }
 
@@ -121,4 +134,23 @@ public class MainActivity extends AppCompatActivity implements Hajj.OnFragmentIn
     public void onFragmentInteraction(Uri uri){
 
     }
+
+
+   /* public static class PrefsFragment extends PreferenceFragment {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+
+            // Load the preferences from an XML resource
+            addPreferencesFromResource(R.xml.preferences);
+        }
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = super.onCreateView(inflater, container, savedInstanceState);
+            view.setBackgroundColor(getResources().getColor(android.R.color.white));
+            return view;
+        }
+    }*/
 }
