@@ -99,10 +99,10 @@ public class Hajj extends Fragment {
 
         //Sections
         sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(0,"ZillHajj 8")); // PARAM 1 =  number of items in first category
-        //sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(1,"ZillHajj 9"));// PARAM 1 =  number of items in second category ...
-        // sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(2,"ZillHajj 10"));
+        sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(2,"ZillHajj 9"));// PARAM 1 =  number of items in second category ...
+         sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(4,"ZillHajj 10"));
         // sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(3,"ZillHajj 11"));
-        sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(4,"ZillHajj 12"));
+        //sections.add(new HajjContentSectionedRecyclerViewAdapter.Section(4,"ZillHajj 12"));
 
         //Add  adapter to the sectionAdapter
         HajjContentSectionedRecyclerViewAdapter.Section[] sectionsAdapter = new HajjContentSectionedRecyclerViewAdapter.Section[sections.size()];

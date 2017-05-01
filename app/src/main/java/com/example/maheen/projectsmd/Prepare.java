@@ -1,9 +1,14 @@
 package com.example.maheen.projectsmd;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +21,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 
 public class Prepare extends Fragment {
@@ -46,11 +53,11 @@ public class Prepare extends Fragment {
         prepareList = new ArrayList<prepareItem>();
 
 
-            prepareItem st = new prepareItem("Ahram" , "Keep a spare ahram that can be used as an alternate. Get right size and keep in carry on." , false);
-            prepareItem st1 = new prepareItem("Detergent" , "Keep detergents to use while in ahram. \n Should be unperfumed" , false);
-            prepareItem st2= new prepareItem("Sunglasses and earplugs" , "Useful to sleep in noisy areas" , false);
-            prepareItem st3 = new prepareItem("Charger" , "Plug adapters and chargers and \n also sim tray card." , false);
-            prepareItem st4 = new prepareItem("Lanyar" , "Helpful for handsfree phone handling, \n especially in Tawaf" , false);
+        prepareItem st = new prepareItem("Ahram" , "Keep a spare ahram that can be used as an alternate. Get right size and keep in carry on." , false);
+        prepareItem st1 = new prepareItem("Detergent" , "Keep detergents to use while in ahram. \n Should be unperfumed" , false);
+        prepareItem st2= new prepareItem("Sunglasses and earplugs" , "Useful to sleep in noisy areas" , false);
+        prepareItem st3 = new prepareItem("Charger" , "Plug adapters and chargers and \n also sim tray card." , false);
+        prepareItem st4 = new prepareItem("Lanyar" , "Helpful for handsfree phone handling, \n especially in Tawaf" , false);
 
         prepareList.add(st);
         prepareList.add(st1);
@@ -93,28 +100,37 @@ public class Prepare extends Fragment {
             @Override
             public void onClick(View v) {
                 String data = "";
+                String dat="";
                 List<prepareItem> stList = ((prepareItemrvDataAdapter) mAdapter)
                         .getStudentist();
+                int count=0;
 
                 for (int i = 0; i < stList.size(); i++) {
                     prepareItem singleStudent = stList.get(i);
                     if (singleStudent.isSelected() == true) {
 
                         data = data + "\n" + singleStudent.getName().toString();
-      /*
-       * Toast.makeText( CardViewActivity.this, " " +
-       * singleStudent.getName() + " " +
-       * singleStudent.getEmailId() + " " +
-       * singleStudent.isSelected(),
-       * Toast.LENGTH_SHORT).show();
-       */
+                        count=count+1;
+
+                    }
+                    else{
+                        dat=dat + singleStudent.getName().toString();
                     }
 
                 }
+                String datacontent;
 
-                Toast.makeText(getActivity(),
-                        "Selected Students: \n" + data, Toast.LENGTH_LONG)
-                        .show();
+                if(count==5){
+                    datacontent ="Congratulation!! you have all prepare items";
+                    startNotification(datacontent);
+                }
+                else{
+                    datacontent="please do add these items too"+dat;
+                    startNotification(datacontent);
+                }
+
+
+
             }
         });
 
@@ -124,6 +140,37 @@ public class Prepare extends Fragment {
         return view;
     }
 
+    private void startNotification(String text) {
+        Log.i("NextActivity", "startNotification");
+
+        // Sets an ID for the notification
+        int mNotificationId = 001;
+
+        // Build Notification , setOngoing keeps the notification always in status bar
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext());
+
+        mBuilder.setSmallIcon(R.drawable.logo);
+        mBuilder.setContentTitle("Pilgrimguide");
+        mBuilder.setContentText(text);
+
+        // Create pending intent, mention the Activity which needs to be
+        //triggered when user clicks on notification(StopScript.class in this case)
+
+        PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0,
+                new Intent(getContext(), Prepare.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        mBuilder.setContentIntent(contentIntent);
+
+
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr = (NotificationManager)getContext().getSystemService(NOTIFICATION_SERVICE);
+
+        // Builds the notification and issues it.
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+
+
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
