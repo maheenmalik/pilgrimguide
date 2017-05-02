@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class Umrah extends Fragment {
 
 
     String [] EssentialItemDescription ;
+
     int  [] Images;
 
     int  Imagesleftmenue[] = {R.drawable.finalumrah,R.drawable.kaba,R.drawable.ibrahimi,R.drawable.tap_water,R.drawable.saee,R.drawable.finalscissors};
@@ -37,32 +39,9 @@ public class Umrah extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MySQLiteHelper db = new MySQLiteHelper(getContext());
-
-        /**
-         * CRUD Operations
-         * */
-        // add Books
-        db.addUmrahitem(new Umrahclass("tawaf", "Enter Al-Haram gate on your right foot",R.drawable.masjidalharam),"umrah");
-        db.addUmrahitem(new Umrahclass("tawaf", "Uncover right shoulder",R.drawable.uncoverrightshoulder),"umrah");
-        db.addUmrahitem(new Umrahclass("tawaf", "Read dua \n بِسم الله،والصّلاة والسّلام على َرسول الله،الّلهُم افتَح لي أبوابَ رَحْمَتِك ",R.drawable.intention),"umrah");
-
-        db.addUmrahitem(new Umrahclass("tawaf", "Start each round while touching or raising hands towards Hajr-e-aswad",R.drawable.hajreaswad1),"umrah");
-        db.addUmrahitem(new Umrahclass("Nafal", "Behind maqam ibrahim pray two raka",R.drawable.makameibrahimif),"umrah");
-        db.addUmrahitem(new Umrahclass("Nafal", "Recite surah Kaafiroon in first raka \n Recite surah Ikhlas in second raka ",R.drawable.nawafilatibrahimi),"umrah");
-
-        db.addUmrahitem(new Umrahclass("Zamzam", "Drink zamzam after performing Raka",R.drawable.zamzamwater),"umrah");
-        db.addUmrahitem(new Umrahclass("Zamzam", "Drink in 1 gulp",R.drawable.persondrinkingzamazam),"umrah");
-        db.addUmrahitem(new Umrahclass("Zamzam", "recite \n   آللّهُمَ اِنِّىْ اَسْعَلُكَ عِلْماً نَّافَعِاً وَّرِزْقًا وَّاسِعاً وَشِفَائً مِّنْ كُلِ دَائً",R.drawable.intention),"umrah");
-
-        db.addUmrahitem(new Umrahclass("Saaee", "While going for Saaee Raise hands towards Hajr-e-aswad and Recite \n بِسمِ اللّهِ اللّهُ اَكْبَر",R.drawable.hijreaswad),"umrah");
-        db.addUmrahitem(new Umrahclass("Saaee", "Recite when reached saffa \n إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَا ئِرِاللّهِ\n أَبْدَأُ بِمَا بَدَأَاللّهُ بِه",R.drawable.safatomarwa),"umrah");
-        db.addUmrahitem(new Umrahclass("Haircut", "Shave or trim hair ",R.drawable.scissorsf),"umrah");
-
-        db.addUmrahitem(new Umrahclass("umrah-completion", "Your umrah has completed!",R.drawable.umrahcom),"umrah");
-
+        MySQLiteHelper db1 = new MySQLiteHelper(getContext());
         // get all books
-        List<Umrahclass> list = db.getAllUmrah("umrah");
+        List<Umrahclass> list = db1.getAllUmrah("umrah");
         Log.d("length of array is","iaiia"+list.size());
 
 
@@ -213,7 +192,21 @@ public class Umrah extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(getActivity(),R.id.iconButton +" clicked",Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getActivity(),R.id.iconButton +" clicked",Toast.LENGTH_SHORT).show();
+                    Log.d("clickecchaljao","hahah"+R.id.iconButton);
+                   // MyLayoutManager.scrollToPositionWithOffset(2, 10);
+                   // MyRecyclerView.getLayoutManager().scrollToPosition(3);
+
+                    RecyclerView.SmoothScroller smoothScroller = new
+                            LinearSmoothScroller(getContext()) {
+                                @Override protected int getVerticalSnapPreference() {
+                                    return LinearSmoothScroller.SNAP_TO_START;
+                                }
+                            };
+                    smoothScroller.setTargetPosition(2);
+                    MyRecyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
+
+
 
 
 

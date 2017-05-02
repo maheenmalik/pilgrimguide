@@ -18,6 +18,45 @@ public class MainActivity extends AppCompatActivity implements Hajj.OnFragmentIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        /**
+         * CRUD Operations
+         * */
+        // add Books
+        db.addUmrahitem(new Umrahclass("tawaf", "Enter Al-Haram gate on your right foot",R.drawable.masjidalharam),"umrah");
+        db.addUmrahitem(new Umrahclass("tawaf", "Uncover right shoulder",R.drawable.uncoverrightshoulder),"umrah");
+        db.addUmrahitem(new Umrahclass("tawaf", "Read dua \n بِسم الله،والصّلاة والسّلام على َرسول الله،الّلهُم افتَح لي أبوابَ رَحْمَتِك ",R.drawable.intention),"umrah");
+
+        db.addUmrahitem(new Umrahclass("tawaf", "Start each round while touching or raising hands towards Hajr-e-aswad",R.drawable.hajreaswad1),"umrah");
+        db.addUmrahitem(new Umrahclass("Nafal", "Behind maqam ibrahim pray two raka",R.drawable.makameibrahimif),"umrah");
+        db.addUmrahitem(new Umrahclass("Nafal", "Recite surah Kaafiroon in first raka \n Recite surah Ikhlas in second raka ",R.drawable.nawafilatibrahimi),"umrah");
+
+        db.addUmrahitem(new Umrahclass("Zamzam", "Drink zamzam after performing Raka",R.drawable.zamzamwater),"umrah");
+        db.addUmrahitem(new Umrahclass("Zamzam", "Drink in 1 gulp",R.drawable.persondrinkingzamazam),"umrah");
+        db.addUmrahitem(new Umrahclass("Zamzam", "recite \n   آللّهُمَ اِنِّىْ اَسْعَلُكَ عِلْماً نَّافَعِاً وَّرِزْقًا وَّاسِعاً وَشِفَائً مِّنْ كُلِ دَائً",R.drawable.intention),"umrah");
+
+        db.addUmrahitem(new Umrahclass("Saaee", "While going for Saaee Raise hands towards Hajr-e-aswad and Recite \n بِسمِ اللّهِ اللّهُ اَكْبَر",R.drawable.hijreaswad),"umrah");
+        db.addUmrahitem(new Umrahclass("Saaee", "Recite when reached saffa \n إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَا ئِرِاللّهِ\n أَبْدَأُ بِمَا بَدَأَاللّهُ بِه",R.drawable.safatomarwa),"umrah");
+        db.addUmrahitem(new Umrahclass("Haircut", "Shave or trim hair ",R.drawable.scissorsf),"umrah");
+
+        db.addUmrahitem(new Umrahclass("umrah-completion", "Your umrah has completed!",R.drawable.umrahcom),"umrah");
+
+
+        db.addUmrahitem(new Umrahclass("8Zilhajj", "Bath and put on Ihram",R.drawable.ihram_man_women),"hajj");
+        db.addUmrahitem(new Umrahclass("8Zilhajj", "Read the dua to make intention",R.drawable.intention),"hajj");
+
+        db.addUmrahitem(new Umrahclass("8Zilhajj", "Here on contineously read talbiyah",R.drawable.talbiyah),"hajj");
+        db.addUmrahitem(new Umrahclass("8Zilhajj", "Go to minnah",R.drawable.minnah),"hajj");
+
+        db.addUmrahitem(new Umrahclass("8Zilhajj", "Pray qasr prayers",R.drawable.namaz),"hajj");
+
+
+
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
